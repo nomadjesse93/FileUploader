@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-
 class DragAndDrop extends Component {
-  dropRef = React.createRef();
-
   state = {
-    dragging: false,
-    dragCounter: 0,
+    drag: false,
   };
+  dropRef = React.createRef();
 
   handleDrag = (e) => {
     e.preventDefault();
@@ -16,26 +13,34 @@ class DragAndDrop extends Component {
   handleDragIn = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    const data = e.dataTransfer;
-
-    this.setState({ dragCounter: this.dragCounter++ });
-
-    if (data.items && data.items.length > 0) {
-      this.setState({ dragging: true });
+    this.dragCounter++;
+    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+      this.setState({ drag: true });
     }
   };
 
   handleDragOut = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    this.setState({ dragging: false, dragCounter: 0 });
+    this.dragCounter--;
+    if (this.dragCounter === 0) {
+      this.setState({ drag: false });
+    }
   };
 
   handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    this.setState({ drag: false });
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      this.props.handleDrop(e.dataTransfer.files);
+
+      console.log(e.dataTransfer.files[0]);
+
+      e.dataTransfer.clearData();
+      this.dragCounter = 0;
+    }
   };
 
   componentDidMount() {
@@ -57,10 +62,7 @@ class DragAndDrop extends Component {
   render() {
     return (
       <div
-        style={{
-          display: 'inline-block',
-          position: 'relative',
-        }}
+        style={{ display: 'inline-block', position: 'relative' }}
         ref={this.dropRef}
       >
         {this.state.dragging && (
@@ -73,9 +75,6 @@ class DragAndDrop extends Component {
               bottom: 0,
               left: 0,
               right: 0,
-              height: '100%',
-              width: '100%',
-              border: 'solid black 1px',
               zIndex: 9999,
             }}
           >
@@ -99,5 +98,4 @@ class DragAndDrop extends Component {
     );
   }
 }
-
 export default DragAndDrop;
