@@ -1,10 +1,10 @@
 import './App.css';
-import FileList from './components/fileList';
+import Container from './components/container/container';
 
 function App() {
   return (
     <div className='App'>
-      <FileList />
+      <Container />
     </div>
   );
 }
