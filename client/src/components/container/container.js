@@ -28,28 +28,9 @@ function Container(props) {
   return (
     <div className={styles.main}>
       <Uploader />
-      <p
-        style={{
-          gridColumn: '2/3',
-          gridRow: '3/4',
-          marginTop: '2rem',
-        }}
-      >
-        {props.fileName}
-      </p>
-      <div
-        style={{
-          gridColumn: '2/3',
-          gridRow: '3/4',
-          margin: 'auto',
-          height: '2rem',
-          width: '6rem',
-          textAlign: 'center',
-          boxShadow: '2px 2px 5px lightgrey',
-          borderRadius: '8px',
-          backgroundColor: '#2F80ED',
-        }}
-      >
+      <p className={styles.fileName}>{props.fileName}</p>
+
+      <div className={styles.button}>
         <label htmlFor='profileImage'>
           <a
             style={{ cursor: 'pointer' }}
@@ -58,22 +39,10 @@ function Container(props) {
               props.getFile({ url: '', fileName: '' });
             }}
           >
-            <div
-              style={{
-                margin: '6px 6px 4px 6px',
-                font: 'Noto Sans',
-                color: 'white',
-                fontWeight: '500',
-                fontSize: '14px',
-                lineHeight: '16px',
-                textAlign: 'center',
-                letterSpacing: '-0.035rem',
-              }}
-            >
-              Choose a file
-            </div>
+            <div className={styles.buttonText}>Choose a file</div>
           </a>
         </label>
+
         <input
           type='file'
           name='profileImage'

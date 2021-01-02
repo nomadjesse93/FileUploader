@@ -10,3 +10,30 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr 3fr 2fr;
 }
+.fileName {
+  grid-column: 2/3;
+  grid-row: 3/4;
+  margin: auto;
+}
+
+.button {
+  grid-column: 2/3;
+  grid-row: 3/4;
+  margin: auto;
+  height: 2rem;
+  width: 6rem;
+  text-align: center;
+  box-shadow: 2px 2px 5px lightgrey;
+  border-radius: 8px;
+  background-color: #2f80ed;
+}
+.buttonText {
+  margin: 6px auto;
+  font: Noto Sans;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: -0.035rem;
+}
