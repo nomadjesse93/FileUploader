@@ -10,10 +10,49 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr 3fr 2fr;
 }
-.fileName {
-  grid-column: 2/3;
+
+.fileNameBorder {
+  position: relative;
+  display: grid;
+  grid: 100% / 80% 20%;
+  grid-column: 1/4;
   grid-row: 3/4;
-  margin: auto;
+  margin: 1rem auto 3rem auto;
+  border: 1px black solid;
+  border-radius: 5px;
+  height: 2.2rem;
+  width: 90%;
+}
+
+.fileName {
+  position: relative;
+  grid-column: 1/2;
+  justify-self: left;
+  font-family: Poppins;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: -0.025rem;
+  color: #707070;
+  margin: 0.5rem auto auto 1rem;
+}
+
+.copy {
+  position: relative;
+  grid-column: 2/3;
+  justify-self: right;
+  height: 100%;
+  width: 6rem;
+  font: Noto Sans;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 15px;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  letter-spacing: 0.02rem;
+  background-color: #2f80ed;
+  cursor: pointer;
 }
 
 .button {
@@ -28,7 +67,7 @@
   background-color: #2f80ed;
 }
 .buttonText {
-  margin: 6px auto;
+  margin: 7px auto;
   font: Noto Sans;
   color: white;
   font-weight: 500;

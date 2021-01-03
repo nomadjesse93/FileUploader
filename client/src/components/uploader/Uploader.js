@@ -1,16 +1,19 @@
 import logo from '../../assets/img/loader.gif';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getFile, setLoading } from '../../redux/rootReducer';
 import * as styles from './UploaderStyles.module.css';
 
-function UploaderFunction(props) {
+function Uploader(props) {
   const [value, setValue] = useState({
     drag: false,
     count: 0,
     switch: false,
     size: ['99% 99%', 'contain'],
   });
+
+  const history = useHistory();
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -43,13 +46,14 @@ function UploaderFunction(props) {
     e.stopPropagation();
 
     const file = e.dataTransfer.files[0];
-    const name = file.name;
+
+    history.push(file.name);
 
     const reader = new FileReader();
     if (file) {
       reader.readAsDataURL(file);
       reader.onload = () => {
-        props.getFile({ url: reader.result, fileName: name });
+        props.getFile({ url: reader.result, fileName: file.name });
         props.setLoading(false);
       };
     }
@@ -93,4 +97,4 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchtoProps = { getFile, setLoading };
 
-export default connect(mapStateToProps, mapDispatchtoProps)(UploaderFunction);
+export default connect(mapStateToProps, mapDispatchtoProps)(Uploader);

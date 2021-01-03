@@ -1,41 +1,67 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { getFile, setLoading } from '../../redux/rootReducer';
-import Uploader from '../uploader/Uploader';
+import ReactToolTip from 'react-tooltip';
 import * as styles from './ContainerStyles.module.css';
 
 function Container(props) {
-  const handleChange = (e) => {
-    props.setLoading(true);
+  const history = useHistory();
 
+  const handleChange = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     const file = e.target.files[0];
-    const name = file.name;
+
+    history.push(file.name);
 
     const reader = new FileReader();
-    if (file) {
-      reader.readAsDataURL(file);
+    props.setLoading(true);
 
-      reader.onload = () => {
-        props.getFile({ url: reader.result, fileName: name });
-        props.setLoading(false);
-      };
-    }
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      props.getFile({
+        url: reader.result,
+        fileName: file.name,
+      });
+      props.setLoading(false);
+    };
   };
 
   return (
     <div className={styles.main}>
-      <Uploader />
-      <p className={styles.fileName}>{props.fileName}</p>
+      {props.children}
+      <div className={styles.fileNameBorder}>
+        <p className={styles.fileName}>
+          {props.fileName ? `${window.location.origin}/${props.fileName}` : ''}
+        </p>
+        <button
+          data-tip='Copied!'
+          className={styles.copy}
+          onClick={() =>
+            navigator.clipboard.writeText(
+              `${window.location.origin}/${props.fileName}`
+            )
+          }
+        >
+          Copy
+        </button>
+        <ReactToolTip
+          type='info'
+          effect='float'
+          event='mousedown'
+          eventOff='mouseup'
+          delayHide={1000}
+        />
+      </div>
 
       <div className={styles.button}>
         <label htmlFor='profileImage'>
           <a
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              props.setLoading(true);
               props.getFile({ url: '', fileName: '' });
             }}
           >
@@ -47,7 +73,7 @@ function Container(props) {
           type='file'
           name='profileImage'
           id='profileImage'
-          onChange={handleChange}
+          onChange={(e) => handleChange(e)}
           style={{ display: 'none' }}
         ></input>
       </div>
