@@ -1,0 +1,18 @@
+.div {
+  margin: auto auto 1rem auto;
+  text-align: center;
+  width: 100%;
+  grid-row: 1/2;
+  grid-column: 1/4;
+}
+.title {
+  font: Noto Sans;
+  color: #383636;
+  font-weight: 600;
+}
+
+.subtitle {
+  font: Noto Sans;
+  color: #383636;
+  font-weight: 500;
+}
