@@ -6,11 +6,23 @@ import Uploader from '../uploader/Uploader';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 function Routes(props) {
+  const fileTest = (fileName) => {
+    const threeLetters = fileName.length - 3;
+    if (
+      fileName.slice(threeLetters, fileName.length) !== 'png' &&
+      fileName.slice(threeLetters, fileName.length) !== 'jpg'
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
   return (
     <Router>
       <Route path={`/`}>
-        <Container>
-          <Uploader />
+        <Container fileTest={fileTest}>
+          <Uploader fileTest={fileTest} />
         </Container>
       </Route>
     </Router>

@@ -1,8 +1,9 @@
 import logo from '../../assets/img/loader.gif';
+import pictureIcon from '../../assets/img/pictureIcon.png';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getFile, setLoading } from '../../redux/rootReducer';
+import { getFile, setLoading, error } from '../../redux/rootReducer';
 import * as styles from './UploaderStyles.module.css';
 
 function Uploader(props) {
@@ -10,7 +11,8 @@ function Uploader(props) {
     drag: false,
     count: 0,
     switch: false,
-    size: ['99% 99%', 'contain'],
+    size: ['99% 99%', 'contain', '60% 73%'],
+    wrongFile: false,
   });
 
   const history = useHistory();
@@ -47,15 +49,25 @@ function Uploader(props) {
 
     const file = e.dataTransfer.files[0];
 
-    history.push(file.name);
+    if (props.fileTest(file.name)) {
+      history.push(file.name);
 
-    const reader = new FileReader();
-    if (file) {
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        props.getFile({ url: reader.result, fileName: file.name });
-        props.setLoading(false);
-      };
+      const reader = new FileReader();
+      if (file) {
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          props.getFile({ url: reader.result, fileName: file.name });
+          props.setLoading(false);
+        };
+      }
+    } else {
+      props.getFile({ url: '', fileName: '' });
+      props.setLoading(false);
+      props.error(true);
+
+      const timer = setTimeout(() => props.error(false), 5000);
+
+      ///clearTimeout(timer);
     }
   };
 
@@ -67,10 +79,18 @@ function Uploader(props) {
 
   return (
     <div
-      className={styles.picture}
+      className={props.url ? styles.picture : styles.icon}
       style={{
-        backgroundImage: `url(${props.url})`,
-        backgroundSize: `${value.switch ? value.size[0] : value.size[1]}`,
+        backgroundImage: `url(${
+          props.url ? props.url : props.loading ? null : pictureIcon
+        })`,
+        backgroundSize: `${
+          props.url && value.switch
+            ? value.size[0]
+            : props.url && !value.switch
+            ? value.size[1]
+            : value.size[2]
+        }`,
       }}
       onClick={handleSizing}
       onDragEnter={handleDragIn}
@@ -86,15 +106,24 @@ function Uploader(props) {
         ></img>
       ) : null}
       {props.url !== '' ? null : (
-        <p className={styles.directions}>Drag and Drop your images here</p>
+        <p className={styles.directions}>
+          {props.wrongFile
+            ? 'Sorry wrong file type!'
+            : 'Drag and Drop your images here'}
+        </p>
       )}
     </div>
   );
 }
 
 const mapStateToProps = (state) => {
-  return { url: state.url, fileName: state.fileName, loading: state.loading };
+  return {
+    url: state.url,
+    fileName: state.fileName,
+    loading: state.loading,
+    wrongFile: state.wrongFile,
+  };
 };
-const mapDispatchtoProps = { getFile, setLoading };
+const mapDispatchtoProps = { getFile, setLoading, error };
 
 export default connect(mapStateToProps, mapDispatchtoProps)(Uploader);

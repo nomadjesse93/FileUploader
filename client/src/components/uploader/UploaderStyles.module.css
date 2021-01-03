@@ -17,6 +17,26 @@
   background-clip: padding-box;
 }
 
+.icon {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 45% 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  grid-row: 2/3;
+  grid-column: 1/4;
+  border: 2px dashed #97bef4;
+  border-radius: 12px;
+  background-color: whitesmoke;
+  width: 85%;
+  margin: 0 auto 0 auto;
+  height: 20rem;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.7;
+  background-clip: padding-box;
+}
+
 .loading {
   position: relative;
   grid-row: 2/3;
@@ -34,5 +54,5 @@
   font-weight: normal;
   font-size: 14px;
   letter-spacing: -0.035rem;
-  color: #a8a4a4;
+  color: #8a8585;
 }
